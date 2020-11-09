@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/navi_search"
+        android:icon="@drawable/search"
+        android:title="search"/>
+
+    <item
+        android:id="@+id/navi_profile"
+        android:icon="@drawable/profile"
+        android:title="search"/>
+
+    <item
+        android:id="@+id/navi_tree"
+        android:icon="@drawable/tree"
+        android:title="search"/>
+
+    <item
+        android:id="@+id/navi_donate"
+        android:icon="@drawable/donate"
+        android:title="search"/>
+
+    <item
+        android:id="@+id/navi_setting"
+        android:icon="@drawable/setting"
+        android:title="search"/>
+
+    <item
+        android:id="@+id/navi_logout"
+        android:icon="@drawable/logout"
+        android:title="search"/>
+
+
+
+
+
+</menu>
