@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".fragment_profile">
 
-    <!-- TODO: Update blank fragment layout -->
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -19,8 +19,8 @@
 
             <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/profile_image"
-                android:layout_width="250dp"
-                android:layout_height="250dp"
+                android:layout_width="175dp"
+                android:layout_height="175dp"
                 android:layout_marginTop="30dp"
                 android:src="@drawable/dp1" />
 
@@ -28,7 +28,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="serif"
+                android:id="@+id/Username"
                 android:hint="ST. RDX"
+                android:textAlignment="center"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="36dp" />
 
@@ -37,6 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:fontFamily="serif"
+                android:id="@+id/UUserid"
                 android:hint="VD1714"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="18dp" />
@@ -47,19 +50,33 @@
                 android:layout_marginTop="30dp"
                 android:src="@drawable/line" />
 
-            <TextView
-                android:layout_width="200dp"
+
+            <LinearLayout
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:hint="3/194, Kamalnivas, Vikram Khand, Gomtinagar, Lucknow. 226010"
-                android:textSize="18dp" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="Address - "
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/UserAddress"
+                    android:layout_marginBottom="10dp"
+                    android:hint=""
+                    android:textSize="16dp" />
+
+            </LinearLayout>
 
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:orientation="horizontal">
 
                 <TextView
@@ -72,9 +89,32 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/UserContact"
                     android:layout_marginBottom="10dp"
                     android:hint="8090258322"
+                    android:textSize="16dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="Email Id - "
                     android:textSize="18dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/UserEmail"
+                    android:layout_marginBottom="10dp"
+                    android:hint="AbcXyz@gmail.com"
+                    android:textSize="16dp" />
 
             </LinearLayout>
 
@@ -87,31 +127,35 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:text="Give"
-                android:textSize="26dp"
+                android:text="Wallet balance"
+                android:textSize="24dp"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:textAlignment="center"
+                android:id="@+id/wallatbalance"
                 android:hint="Rs. 2800"
-                android:textSize="26dp" />
+                android:textSize="24dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:text="Take"
-                android:textSize="26dp"
+                android:text="Life Time Earning"
+                android:textSize="24dp"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:textAlignment="center"
+                android:id="@+id/lifetimeearning"
                 android:hint="Rs. 4900"
-                android:textSize="26dp" />
+                android:textSize="24dp" />
 
 
         </LinearLayout>

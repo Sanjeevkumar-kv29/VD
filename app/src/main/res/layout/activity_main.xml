@@ -56,7 +56,7 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-    android:id="@+id/email"
+        android:id="@+id/emaillyt"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="25dp"
@@ -69,13 +69,14 @@
     app:layout_constraintTop_toBottomOf="@+id/textView1">
 
     <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
 </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/pass"
+        android:id="@+id/passlyt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
@@ -85,11 +86,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email">
+        app:layout_constraintTop_toBottomOf="@+id/emaillyt">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:id="@+id/pass"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -97,18 +99,21 @@
     <com.dx.dxloadingbutton.lib.LoadingButton
         android:id="@+id/signin"
         android:layout_gravity="center"
-        android:layout_width="228dp"
-        android:layout_height="65dp"
+        android:layout_width="180dp"
+        android:layout_height="50dp"
         android:layout_marginTop="5dp"
-        app:lb_resetAfterFailed="true"
+        app:lb_cornerRadius="40dp"
         app:lb_btnColor="@color/colorAccent"
-        app:lb_cornerRadius="15dp"
-        app:lb_rippleEnable="true"
+        app:lb_textColor="@color/colorWhite"
+        app:lb_btnText="Login"
+        app:lb_btnRippleColor="#000000"
+        app:lb_btnDisabledColor="#cccccc"
+        app:lb_disabledTextColor="#999999"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pass"
-        app:lb_btnText="Login"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/passlyt" />
+
+
 
     <Button
         android:id="@+id/forgotpass"

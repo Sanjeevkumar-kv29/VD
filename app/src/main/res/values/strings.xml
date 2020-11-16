@@ -2,5 +2,5 @@
     <string name="app_name">VD</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="BaseUrl">Hello blank fragment</string>
+    <string name="BaseUrl">VK-Backend.herokuapp.com</string>
 </resources>

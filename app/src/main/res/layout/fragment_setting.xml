@@ -3,15 +3,222 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/back1"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment_setting">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <Button
+        android:id="@+id/savebtn"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Setting"
-        android:textSize="30dp"
-        android:textColor="#000000"/>
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="0dp"
+        android:gravity="right"
+        android:padding="15dp"
+        android:text="Save"
+        android:textColor="@color/colorAccent"
+        android:textSize="25dp"/>
 
+    <LinearLayout
+        android:id="@+id/imglyt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/Sprofile_image"
+            android:layout_width="155dp"
+            android:layout_height="155dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/dp1" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/SuserId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:text="PERSONAL DETAILS"
+            android:textAlignment="center"
+            android:textSize="15dp" />
+    </LinearLayout>
+
+
+    <ScrollView
+        android:id="@+id/SV"
+        android:layout_width="match_parent"
+        android:layout_height="520dp"
+        android:layout_marginStart="5dp"
+        android:scrollbars="horizontal"
+        android:layout_below="@id/imglyt">
+
+        <LinearLayout
+            android:id="@+id/details"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:id="@+id/SUserdetailLyt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="15dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/Snamelyt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Full name"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/Sname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/Scontactlyt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Contact no."
+                    app:layout_constraintTop_toBottomOf="@+id/Snamelyt">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/Scontact"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:maxLength="10" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/Saddresslyt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Permanent address"
+                    app:layout_constraintTop_toBottomOf="@+id/Scontactlyt">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/Saddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/Spincodelyt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Your Email id"
+                    app:layout_constraintTop_toBottomOf="@+id/Saddresslyt">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/SEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="BANK DETAILS"
+                android:textAlignment="center"
+                android:textSize="27dp" />
+
+
+            <LinearLayout
+                android:id="@+id/SBankdetailLyt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="15dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/SUserdetailLyt">
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/Banknamelyt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Your Bank Name">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/Bankname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/SAccountNolyt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Your Account No"
+                    app:layout_constraintTop_toBottomOf="@+id/Banknamelyt">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/SAccountNo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/SIFSCcodelyt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Your IFSC Code"
+                    app:layout_constraintTop_toBottomOf="@+id/SAccountNolyt">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/SIFSCcode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/SAccountHolderNamelyt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Account Holder Name"
+                    app:layout_constraintTop_toBottomOf="@+id/Sreferrallyt">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/SAccountHolderName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:maxLength="10" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="75dp"
+                android:layout_below="@id/signin"
+                android:layout_marginTop="20dp"
+                app:srcCompat="@drawable/img2" />
+
+        </LinearLayout>
+
+    </ScrollView>
 </RelativeLayout>
+
