@@ -52,6 +52,7 @@ class fragment_profile : Fragment() {
                 Log.d("Profile fetch",response.toString())
 
                 pD?.dismiss()
+
                 val payment_status = response["payment_status"]
                 val wallet = response["wallet"]
                 val lifetimeEarnings = response["lifetimeEarnings"]
@@ -60,6 +61,16 @@ class fragment_profile : Fragment() {
                 val fullname = response["full_name"]
                 val address = response["address"]
                 val email = response["email"]
+
+
+                val bankName = response["bankName"]
+                val accountNo = response["account_no"]
+                val Ifsccode = response["ifsc_code"]
+                val Accountholdername = response["account_holder_name"]
+
+                userProfileData(payment_status.toString(),wallet.toString(),lifetimeEarnings.toString(),
+                                contactno.toString(),profileurl.toString(),fullname.toString(),address.toString(),
+                                email.toString(),bankName.toString(),accountNo.toString(),Ifsccode.toString(),Accountholdername.toString())
 
                 Glide.with(context).asBitmap().load(profileurl).into(profile_image)
 
@@ -84,6 +95,24 @@ class fragment_profile : Fragment() {
             })
 
             que.add(req)
+
+    }
+
+    fun userProfileData(
+        payment_status: String,
+        wallet: String,
+        lifetimeEarnings: String,
+        contactno: String,
+        profileurl: String,
+        fullname: String,
+        address: String,
+        email: String,
+        bankName: String,
+        accountNo: String,
+        Ifsccode: String,
+        Accountholdername: String
+    ) {
+
 
     }
 

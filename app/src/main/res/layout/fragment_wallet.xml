@@ -5,10 +5,87 @@
     android:layout_height="match_parent"
     tools:context=".fragment_wallet">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:id="@+id/prnt"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical"
+        android:gravity="top|center">
+
+    <LinearLayout
+        android:id="@+id/wltlyt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/roundedback"
+        android:padding="10dp"
+        android:elevation="5dp"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Money in your wallet"
+            android:textAlignment="center"
+            android:textSize="20dp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/mnyinwlt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorAccent"
+            android:text="400"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:textSize="30dp" />
+    </LinearLayout>
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="150dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/roundedback"
+            android:padding="5dp"
+            android:textColor="@color/colorAccent"
+            android:elevation="10dp"
+            android:text=" Withdraw "/>
+
+
+
+    <LinearLayout
+        android:id="@+id/transectionLYT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:padding="10dp"
+        android:elevation="10dp"
+        android:orientation="vertical">
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:padding="5dp"
+            android:text="Transection History"
+            android:textAlignment="center"
+            android:textSize="20dp" />
+
+
+        <ListView
+            android:padding="5dp"
+            android:layout_margin="10dp"
+            android:id="@+id/TransectionLV"
+            android:scrollbars="none"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@color/colorWhite"
+            android:dividerHeight="10dp"/>
+
+    </LinearLayout>
+
+    </LinearLayout>
 
 </FrameLayout>

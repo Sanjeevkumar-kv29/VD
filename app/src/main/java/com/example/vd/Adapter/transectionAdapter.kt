@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.*
 import com.example.vd.R
 
-class CategoryListAdapter(private val context: Activity, private val amount: ArrayList<String>, private val trnsctndate: ArrayList<String>)
+class transectionAdapter(private val context: Activity, private val amount: ArrayList<String>, private val trnsctndate: ArrayList<String>)
     : ArrayAdapter<String>(context, R.layout.cstmtransectionlist, amount) {
 
     override fun getView(position: Int, view: View?, parent: ViewGroup): View {

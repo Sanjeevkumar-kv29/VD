@@ -3,27 +3,31 @@
     <item
         android:id="@+id/navi_profile"
         android:icon="@drawable/profile"
-        android:title="search"/>
+        android:title="profile"/>
 
     <item
         android:id="@+id/navi_tree"
         android:icon="@drawable/tree"
-        android:title="search"/>
+        android:title="tree"/>
+    <item
+        android:id="@+id/navi_wallet"
+        android:icon="@drawable/wallet"
+        android:title="Wallet"/>
 
     <item
         android:id="@+id/navi_donate"
         android:icon="@drawable/donate"
-        android:title="search"/>
+        android:title="donate"/>
 
     <item
         android:id="@+id/navi_setting"
         android:icon="@drawable/setting"
-        android:title="search"/>
+        android:title="setting"/>
 
     <item
         android:id="@+id/navi_logout"
         android:icon="@drawable/logout"
-        android:title="search"/>
+        android:title="logout"/>
 
 
 

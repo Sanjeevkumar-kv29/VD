@@ -56,6 +56,9 @@ class HomeActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         when (id){/* R.id.navi_search -> {addFragment(fragment_search())
                 Toast.makeText(this,"Search ", Toast.LENGTH_LONG).show()}*/
 
+            R.id.navi_wallet -> {addFragment(fragment_wallet())
+                Toast.makeText(this,"wallet ", Toast.LENGTH_LONG).show()}
+
             R.id.navi_profile -> {addFragment(fragment_profile())
                 Toast.makeText(this,"profile ", Toast.LENGTH_LONG).show()}
 

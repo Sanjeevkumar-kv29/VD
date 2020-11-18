@@ -1,33 +1,30 @@
 package com.example.vd
 
+import android.app.Activity
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonArrayRequest
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
+import com.bumptech.glide.Glide
+import com.example.Adapter.transectionAdapter
+import kotlinx.android.synthetic.main.fragment_profile.*
+import kotlinx.android.synthetic.main.fragment_wallet.*
+import org.json.JSONException
+import java.util.ArrayList
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [fragment_wallet.newInstance] factory method to
- * create an instance of this fragment.
- */
 class fragment_wallet : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    var amount= ArrayList<String>()
+    var transectiondate= ArrayList<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,23 +34,63 @@ class fragment_wallet : Fragment() {
         return inflater.inflate(R.layout.fragment_wallet, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment fragment_wallet.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            fragment_wallet().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        val Getsharepref: SharedPreferences = this.activity!!.getSharedPreferences("LoginUserDetails",0)
+        val id=Getsharepref.getString("user_id","")
+
+        amount.clear()
+        transectiondate.clear()
+
+        gettransetiondetails(id.toString())
+
+
     }
+
+
+
+
+    fun gettransetiondetails(Userid:String){
+
+        val url = "https://vk-backend.herokuapp.com/users/getTransactions?uid=${Userid}"
+        val que = Volley.newRequestQueue(context)
+
+        val req = JsonArrayRequest(
+            Request.Method.POST,url,null, Response.Listener { response ->try {
+
+                for (i in 0..response.length()-1) {
+                    val responseOBJ = response.getJSONObject(i)
+                    transectiondate.add(responseOBJ.getString("redemption_placed_at"))
+                    amount.add("Rs. "+responseOBJ.getString("redemption_amount"))
+
+                    Log.d("responseVal",response.getJSONObject(i).toString())
+
+                }
+
+
+                val transectionlvadapter = transectionAdapter(context as Activity,amount,transectiondate)
+                TransectionLV.adapter = transectionlvadapter
+
+
+                Log.d("success","REQUEST GET")
+                Log.d("Profile fetch",response.toString())
+
+
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
+        },
+            Response.ErrorListener {
+                Toast.makeText(context,"Check Your Connection Or try Again Later".toString(), Toast.LENGTH_LONG).show()
+                Log.d("ERROR","REQUEST FAILD")
+            })
+
+        que.add(req)
+
+    }
+
+
+
+
 }

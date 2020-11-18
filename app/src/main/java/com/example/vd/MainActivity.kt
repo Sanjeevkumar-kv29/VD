@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
         jsonobj.put("password",password)
         Log.d("JSONOBJECT",jsonobj.toString())
 
-        val req = JsonObjectRequest(Request.Method.POST,url,jsonobj, Response.Listener {response ->try {
+        val req = JsonObjectRequest(Request.Method.POST,url,jsonobj, Response.Listener {response ->
             Log.d("success","REQUEST GET")
             Log.d("successFetchData",response.toString())
 
@@ -90,9 +90,6 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this,HomeActivity::class.java))
                 finish()
 
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
 
         }, Response.ErrorListener {
 
@@ -128,15 +125,6 @@ class MainActivity : AppCompatActivity() {
 
 
 }*/
-
-    private fun loadMap(){
-
-        val Getsharepref: SharedPreferences = getSharedPreferences("LoginUserDetails",0)
-        if (Getsharepref != null) {
-            Toast.makeText(this,Getsharepref.getString("user_id","").toString(),Toast.LENGTH_LONG).show()
-            }
-
-    }
 
 
 }
