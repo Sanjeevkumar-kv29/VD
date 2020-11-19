@@ -15,6 +15,7 @@ class SplashScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
+        getSupportActionBar()?.hide()
 
         val animat: Animation = AnimationUtils.loadAnimation(this,R.anim.splashanim)
         val animatv: Animation = AnimationUtils.loadAnimation(this,R.anim.splashanim)
@@ -30,7 +31,7 @@ class SplashScreen : AppCompatActivity() {
                 startActivity(Intent(this,MainActivity::class.java))
                 finish()
 
-            },2500 )
+            },2000 )
 
 
     }

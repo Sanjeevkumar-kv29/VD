@@ -5,13 +5,70 @@
     android:layout_height="match_parent"
     tools:context=".fragment_tree">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
+    <com.facebook.shimmer.ShimmerFrameLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/shimmer_view_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:tilt="45"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                app:srcCompat="@drawable/img1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vasudhaiva"
+                android:textColor="#000000"
+                android:textAlignment="center"
+                android:textSize="35dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kutumbakam"
+                android:textColor="#000000"
+                android:textAlignment="center"
+                android:textSize="34dp" />
+
+        </LinearLayout>
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Tree"
-        android:textSize="30dp"
-        android:textColor="#000000"/>
+        android:layout_below="@id/shimmer_view_container">
+
+    <TextView
+        android:id="@+id/msgft"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Disciple's"
+        android:layout_weight="1"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:padding="15dp"
+        android:textColor="@color/colorAccent"
+        android:textSize="25dp"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/childsRV"
+        android:layout_width="match_parent"
+        android:background="@drawable/back1"
+        android:padding="25dp"
+        android:layout_below="@+id/msgft"
+        android:layout_height="match_parent" />
+    </RelativeLayout>
 
 </RelativeLayout>

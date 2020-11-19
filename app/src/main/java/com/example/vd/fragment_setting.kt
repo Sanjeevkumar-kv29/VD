@@ -17,6 +17,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
@@ -24,20 +25,33 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
+import com.example.vd.Apiconfig.APIconfigure
+import com.example.vd.GalleryUploadFile.MyAPI
+import com.example.vd.GalleryUploadFile.UploadRequestBody
+import com.example.vd.GalleryUploadFile.UploadResponse
+import com.example.vd.GalleryUploadFile.getFileName
+import com.irozon.alertview.AlertActionStyle
+import com.irozon.alertview.AlertStyle
+import com.irozon.alertview.AlertView
+import com.irozon.alertview.objects.AlertAction
+import kotlinx.android.synthetic.main.activity_sign_up.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_setting.*
+import kotlinx.android.synthetic.main.fragment_setting.Bankname
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import org.json.JSONException
 import org.json.JSONObject
-import java.io.ByteArrayOutputStream
-import java.io.IOException
+import retrofit2.Call
+import retrofit2.Callback
+import java.io.*
 
 
-class fragment_setting : Fragment() {
+class fragment_setting : Fragment(),UploadRequestBody.UploadCallback {
 
-
-    private val PICK_IMAGE_REQUEST = 71
-    private var filePath: Uri? = null
-    var encodeImageString: String? = null
+    private var selectedImageUri: Uri? = null
+    lateinit var imgURL:String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,6 +64,7 @@ class fragment_setting : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+            shimmer_view_containerst.startShimmerAnimation()
 
         val Getsharepref: SharedPreferences = this.activity!!.getSharedPreferences("LoginUserDetails",0)
         val id=Getsharepref.getString("user_id","").toString()
@@ -57,25 +72,53 @@ class fragment_setting : Fragment() {
 
         getProfile(id)
 
-
-        Sprofile_image.setOnClickListener {
-
-            launchGalleryAndSelectImage()
-
+        image_view.setOnClickListener {
+            openImageChooser()
         }
+        button_upload.setOnClickListener {
+            uploadImage()
+        }
+
 
         savebtn.setOnClickListener {
+            if (Sname.text.isNullOrEmpty()){
+                Sname.setError("Please enter name")
+            }
+            else if (Scontact.text.isNullOrEmpty()){
+                Scontact.setError("Please enter Contact")
+            }
+            else if (Saddress.text.isNullOrEmpty()){
+                Saddress.setError("Please enter Address")
+            }
+            else if (SEmail.text.isNullOrEmpty()){
+                SEmail.setError("Please enter Email")
+            }
+            else if (Bankname.text.isNullOrEmpty()){
+                Bankname.setError("Please enter Address")
+            }
+            else if (SAccountNo.text.isNullOrEmpty()){
+                SAccountNo.setError("Please enter Address")
+            }
+            else if (SIFSCcode.text.isNullOrEmpty()){
+                SIFSCcode.setError("Please enter Address")
+            }
+            else if (SAccountHolderName.text.isNullOrEmpty()){
+                SAccountHolderName.setError("Please enter Address")
+            }
+            else{
 
-           saveProfileDetails(id)
+                shimmer_view_containerst.visibility = View.VISIBLE
+                shimmer_view_containerst.startShimmerAnimation()
+
+                saveProfileDetails(id)
+            }
 
         }
-
-
 
     }
 
-    private fun saveProfileDetails(_uid:String) {
 
+    private fun saveProfileDetails(_uid:String) {
 
         val jsonobj = JSONObject()
         jsonobj.put("full_name",Sname.text)
@@ -86,27 +129,25 @@ class fragment_setting : Fragment() {
         jsonobj.put("account_no",SAccountNo.text)
         jsonobj.put("ifsc_code",SIFSCcode.text)
         jsonobj.put("account_holder_name",SAccountHolderName.text)
+        jsonobj.put("profile_picture",imgURL)
         
         val jsonOBJFinal = JSONObject()
         jsonOBJFinal.put("uid",_uid)
         jsonOBJFinal.put("data",jsonobj)
 
 
-        Log.d("JSONOBJECT",jsonOBJFinal.toString())
+        Log.d("SETTING-JSONOBJECT",jsonOBJFinal.toString())
 
-        val url = "https://vk-backend.herokuapp.com/users/c_profileEdit"
+        val API = APIconfigure()
         val que = Volley.newRequestQueue(context)
 
-        val req = JsonObjectRequest(Request.Method.PUT,url,jsonOBJFinal, Response.Listener { response ->try {
+        val req = JsonObjectRequest(Request.Method.PUT,API.BASEURL+API.PROFILEDIT,jsonOBJFinal, Response.Listener { response ->try {
             Log.d("EDITsuccess","REQUEST GET")
             Log.d("EDITafterProfilefetch",response.toString())
 
-
-
+            shimmer_view_containerst.stopShimmerAnimation()
+            shimmer_view_containerst.visibility = View.GONE
             //Glide.with(context).asBitmap().load(profileurl).into(profile_image)
-
-
-
 
 
         } catch (e: JSONException) {
@@ -120,8 +161,10 @@ class fragment_setting : Fragment() {
             })
 
         que.add(req)
+        req.setRetryPolicy(DefaultRetryPolicy(10000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
 
     }
+
 
     fun getProfile(Userid:String){
 
@@ -132,6 +175,8 @@ class fragment_setting : Fragment() {
             Log.d("success","REQUEST GET")
             Log.d("Profile fetch",response.toString())
 
+            shimmer_view_containerst.stopShimmerAnimation()
+            shimmer_view_containerst.visibility = View.GONE
 
             val payment_status = response["payment_status"]
             val wallet = response["wallet"]
@@ -142,12 +187,14 @@ class fragment_setting : Fragment() {
             val address = response["address"]
             val email = response["email"]
 
+            imgURL=profileurl.toString()
+
             val bankName = response["bankName"]
             val accountNo = response["account_no"]
             val Ifsccode = response["ifsc_code"]
             val Accountholdername = response["account_holder_name"]
 
-            //Glide.with(context).asBitmap().load(profileurl).into(profile_image)
+            Glide.with(context).asBitmap().load(imgURL).into(image_view)
 
             Sname.setText(fullname.toString())
             Scontact.setText(contactno.toString())
@@ -161,7 +208,6 @@ class fragment_setting : Fragment() {
 
 
 
-
         } catch (e: JSONException) {
             e.printStackTrace()
         }
@@ -173,83 +219,100 @@ class fragment_setting : Fragment() {
             })
 
         que.add(req)
+        req.setRetryPolicy(DefaultRetryPolicy(10000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
+
 
     }
 
 
 
-
-    private fun launchGalleryAndSelectImage() {
+    private fun openImageChooser() {
         val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST)
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_CODE_PICK_IMAGE)
     }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
-            if(data == null || data.data == null){
-                return
-            }
-
-            filePath = data.data
-
-
-            Toast.makeText(this.context, filePath?.path,Toast.LENGTH_LONG).show()
-            try {
-                val bitmap = MediaStore.Images.Media.getBitmap(this.activity?.contentResolver, filePath)
-
-                Sprofile_image.setImageBitmap(bitmap)
-
-
-            } catch (e: IOException) {
-                e.printStackTrace()
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                REQUEST_CODE_PICK_IMAGE -> {
+                    selectedImageUri = data?.data
+                    image_view.setImageURI(selectedImageUri)
+                }
             }
         }
     }
 
+    private fun uploadImage() {
 
-
-
-    fun LoginApiFunCall(uri:String){
-
-        val url = "https://vk-backend.herokuapp.com/users/c_upload_photo"
-        val que = Volley.newRequestQueue(this.context)
-
-        val jsonobj = JSONObject()
-        jsonobj.put("image",uri)
-        Log.d("JSONOBJECT",jsonobj.toString())
-
-        val req = VolleyMultipartRequest(Request.Method.POST,url, Response.Listener { response ->try {
-            Log.d("success","REQUEST GET")
-            Log.d("successFetchData",response.toString())
-
-            Toast.makeText(this.context,"WELCOME BACK...", Toast.LENGTH_LONG).show()
-
-
-        } catch (e: JSONException) {
-            e.printStackTrace()
+        if (selectedImageUri == null) {
+            val alert = AlertView("ALERT....", "Please choose image by Click the image", AlertStyle.DIALOG)
+            alert.addAction(AlertAction("ok", AlertActionStyle.DEFAULT, { action -> }))
+            alert.show(activity as AppCompatActivity)
+            return
         }
 
-        }, Response.ErrorListener {
+        progress_bar.visibility = View.VISIBLE
+        val parcelFileDescriptor =  context?.contentResolver?.openFileDescriptor(selectedImageUri!!, "r", null)
+            ?: return
 
-            Log.d("ERRORinGetImgURL",it.toString())
-            Log.d("ERRORinGetImgURL","REQUEST FAILD")
+        val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
+        val file = File(activity?.cacheDir,activity?.contentResolver?.getFileName(selectedImageUri!!)
+        )
+        val outputStream = FileOutputStream(file)
+        inputStream.copyTo(outputStream)
 
+
+        progress_bar.progress = 0
+
+        val body = UploadRequestBody(file, "image", callback = this)
+
+        //LoginApiFunCall(MultipartBody.Part.createFormData("image",file.name,body))
+
+        MyAPI().uploadImage(
+            MultipartBody.Part.createFormData(
+                "image",
+                file.name,
+                body
+            ),
+            RequestBody.create(MediaType.parse("multipart/form-data"), "json")
+        ).enqueue(object : Callback<UploadResponse> {
+            override fun onFailure(call: Call<UploadResponse>, t: Throwable) {
+
+                val alert = AlertView("Error", "An error Occured Please Try again Later", AlertStyle.DIALOG)
+                alert.addAction(AlertAction("ok", AlertActionStyle.DEFAULT, { action -> }))
+                alert.show(activity as AppCompatActivity)
+                //layout_root.snackbar(t.message!!)
+                progress_bar.progress = 0
+            }
+
+            override fun onResponse(
+                call: Call<UploadResponse>,
+                response: retrofit2.Response<UploadResponse>
+            ) {
+                response.body()?.let {
+                    //layout_root.snackbar(it.toString())
+                    progress_bar.progress = 100
+                    imgURL = it.url
+                    val alert = AlertView("Profile Uploaded", "Image is Uploaded Click Save button to save", AlertStyle.DIALOG)
+                    alert.addAction(AlertAction("ok", AlertActionStyle.DEFAULT, { action -> }))
+                    alert.show(activity as AppCompatActivity)
+                    Log.d("result",it.toString())
+                    progress_bar.visibility=View.GONE
+                }
+            }
         })
 
-        que.add(req)
-        req.setRetryPolicy(
-            DefaultRetryPolicy(
-                120000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
-            )
-        )
+    }
 
+    override fun onProgressUpdate(percentage: Int) {
+        progress_bar.progress = percentage
+    }
 
+    companion object {
+        const val REQUEST_CODE_PICK_IMAGE = 101
     }
 
 

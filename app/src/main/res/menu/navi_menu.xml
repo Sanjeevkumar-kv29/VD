@@ -14,10 +14,7 @@
         android:icon="@drawable/wallet"
         android:title="Wallet"/>
 
-    <item
-        android:id="@+id/navi_donate"
-        android:icon="@drawable/donate"
-        android:title="donate"/>
+
 
     <item
         android:id="@+id/navi_setting"

@@ -8,10 +8,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.example.vd.Apiconfig.APIconfigure
 import com.irozon.alertview.AlertActionStyle
 import com.irozon.alertview.AlertStyle
 import com.irozon.alertview.AlertView
@@ -26,6 +28,7 @@ import org.json.JSONObject
 
 class SignUpActivity : AppCompatActivity() {
 
+
     private var pD: ProgressDialog? = null
     var gender =""
     val UsersignupDatamap = hashMapOf<String, Any?>()
@@ -34,6 +37,7 @@ class SignUpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
 
+        getSupportActionBar()?.hide()
         pD = ProgressDialog(this)
 
         signup.setOnClickListener {
@@ -135,63 +139,45 @@ class SignUpActivity : AppCompatActivity() {
 
     fun signupApiFunCall(Parentid:String, context: Context){
 
-
-        val url = "https://vk-backend.herokuapp.com/users/verifyReferralID"
-
         val que = Volley.newRequestQueue(context)
-
+        val API=APIconfigure()
         val jsonobj = JSONObject()
         jsonobj.put("parentID",Parentid)
-
-        Log.d("JSONOBJECT",jsonobj.toString())
-
-        val req = JsonObjectRequest(Request.Method.POST,url,jsonobj, Response.Listener { response ->
-            Log.d("success","REQUEST GET")
-            Log.d("success",response.toString())
-            Log.d("JSONOBJECT",response["response"].toString())
-
-            UsersignupDatamap["full_name"] = name.text
-            UsersignupDatamap["gender"] = gender
-            UsersignupDatamap["phone_no"] = contact.text
-            UsersignupDatamap["email"] = email.text
-            UsersignupDatamap["address"] = address.text
-            UsersignupDatamap["password"] = pass.text
-            UsersignupDatamap["parentID"] = referral.text
-            Log.d("UserSignUpData",UsersignupDatamap.toString())
+        Log.d("SIGNUP-JSONOBJECT",jsonobj.toString())
 
 
-            pD?.dismiss()
+        val req = JsonObjectRequest(Request.Method.POST,API.BASEURL+API.REFFERALCHECK,jsonobj,
+            Response.Listener { response ->
+                Log.d("success","REQUEST GET")
+                Log.d("success",response.toString())
+                Log.d("JSONOBJECT",response["response"].toString())
 
-            if(response["response"].equals("Refferal is valid")){
+                UsersignupDatamap["full_name"] = name.text
+                UsersignupDatamap["gender"] = gender
+                UsersignupDatamap["phone_no"] = contact.text
+                UsersignupDatamap["email"] = email.text
+                UsersignupDatamap["address"] = address.text
+                UsersignupDatamap["password"] = pass.text
+                UsersignupDatamap["parentID"] = referral.text
+                Log.d("UserSignUpData",UsersignupDatamap.toString())
 
-                //signin.loadingSuccessful("")
-               UserdetailLyt.visibility = View.GONE
-                signin.visibility = View.GONE
-               BankdetailLyt.visibility = View.VISIBLE
+                pD?.dismiss()
+                if(response["response"].equals("Refferal is valid")){UserdetailLyt.visibility = View.GONE
+                                                                      signin.visibility = View.GONE
+                                                                      BankdetailLyt.visibility = View.VISIBLE}
 
-            }
-
-
-        }, Response.ErrorListener {
-
-            //signin.loadingFailed()
-            pD?.dismiss()
-            //Toast.makeText(this,"Enter Valid Refferal", Toast.LENGTH_LONG).show()
-
-            val alert = AlertView("Wrong Referral ID", "Please Check Your Referral ID", AlertStyle.DIALOG)
-            alert.addAction(AlertAction("ok", AlertActionStyle.DEFAULT, { action -> }))
-            referral.setError("Enter Valid referral ID")
-            alert.show(this)
-            Log.d("ERROR",it.toString())
-            Log.d("ERROR","REQUEST FAILD")
-
-            ////////// only for response get------------
-            //UserdetailLyt.visibility = View.GONE
-           // BankdetailLyt.visibility = View.VISIBLE
-
-        })
-
-        que.add(req)
+            },
+            Response.ErrorListener {
+                pD?.dismiss()
+                val alert = AlertView("Wrong Referral ID", "Please Check Your Referral ID", AlertStyle.DIALOG)
+                alert.addAction(AlertAction("ok", AlertActionStyle.DEFAULT, { action -> }))
+                referral.setError("Enter Valid referral ID")
+                alert.show(this)
+                Log.d("REFFERALERROR",it.toString())
+                Log.d("REFFERALERROR","REQUEST FAILD")
+            })
+            que.add(req)
+            req.setRetryPolicy(DefaultRetryPolicy(10000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
 
     }
 

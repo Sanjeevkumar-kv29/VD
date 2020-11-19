@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Redeem">
+
+
+    <EditText
+        android:id="@+id/redeemamnt"
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:padding="15dp"
+        android:textAlignment="center"
+        android:inputType="number"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="25dp"
+        android:background="@drawable/roundedback"
+        android:hint="Enter AmountTo Redeem" />
+
+    <Button
+        android:id="@+id/buttonredeem"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:background="@drawable/roundedback"
+        android:elevation="10dp"
+        android:layout_below="@+id/redeemamnt"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="75dp"
+        android:text="redeem" />
+
+    <cdflynn.android.library.checkview.CheckView
+        android:id="@+id/check"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="125dp"
+        android:layout_marginEnd="75dp"
+        android:foregroundGravity="center"
+        app:checkView_strokeColor="@color/colorAccent"
+        app:checkView_strokeWidth="5dp" />
+
+    <Button
+        android:id="@+id/donewlt"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:background="@drawable/roundedback"
+        android:elevation="10dp"
+        android:layout_below="@+id/check"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="30dp"
+        android:visibility="gone"
+        android:text="DONE" />
+
+
+</RelativeLayout>

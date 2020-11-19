@@ -29,7 +29,7 @@ class HomeActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-
+        getSupportActionBar()?.hide()
 
         nav_menu.setNavigationItemSelectedListener(this)
         displayScreen(-1)
@@ -80,8 +80,8 @@ class HomeActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
                 alert.show(this)
             }
 
-            R.id.navi_donate -> {addFragment(fragment_donation())
-                Toast.makeText(this,"navi donate", Toast.LENGTH_LONG).show()}
+            //R.id.navi_donate -> {addFragment(fragment_donation())
+               // Toast.makeText(this,"navi donate", Toast.LENGTH_LONG).show()}
                 //supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment_donation()).commit()
 
             R.id.navi_tree -> {addFragment(fragment_tree())

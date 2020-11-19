@@ -7,6 +7,50 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment_setting">
 
+    <com.facebook.shimmer.ShimmerFrameLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/shimmer_view_containerst"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:tilt="45"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            app:srcCompat="@drawable/img1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vasudhaiva"
+            android:textColor="#000000"
+            android:textAlignment="center"
+            android:textSize="35dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kutumbakam"
+            android:textColor="#000000"
+            android:textAlignment="center"
+            android:textSize="34dp" />
+
+    </LinearLayout>
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/shimmer_view_containerst">
 
     <Button
         android:id="@+id/savebtn"
@@ -30,12 +74,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:layout_marginEnd="5dp"
+            android:visibility="gone"
+            tools:progress="40" />
+
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/Sprofile_image"
+            android:id="@+id/image_view"
             android:layout_width="155dp"
             android:layout_height="155dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="20dp"
             android:src="@drawable/dp1" />
+        <Button
+            android:id="@+id/button_upload"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_height="25dp"
+            android:text="Upload"
+            android:background="@drawable/roundedback"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/SuserId"
@@ -116,7 +180,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/Spincodelyt"
+                    android:id="@+id/Semaillyt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Your Email id"
@@ -204,8 +268,7 @@
                         android:id="@+id/SAccountHolderName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:maxLength="10" />
+                        android:inputType="text" />
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
@@ -220,5 +283,8 @@
         </LinearLayout>
 
     </ScrollView>
+
+    </RelativeLayout>
+
 </RelativeLayout>
 

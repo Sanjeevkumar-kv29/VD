@@ -7,55 +7,39 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
-import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.example.vd.Apiconfig.APIconfigure
+import com.example.vd.Apiconfig.APIconfigure.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.email
-import org.json.JSONException
 import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-       if (supportActionBar != null)
+        if (supportActionBar != null)
         setContentView(R.layout.activity_main)
-
+        getSupportActionBar()?.hide()
 
         val Getsharepref: SharedPreferences = getSharedPreferences("LoginUserDetails",0)
         val logstatus=Getsharepref.getString("login","")
 
-        if (logstatus == "true") {
-            Toast.makeText(this,"WELCOME BACK...",Toast.LENGTH_LONG).show()
+        if (logstatus == "true") { Toast.makeText(this,"WELCOME BACK...",Toast.LENGTH_LONG).show()
             startActivity(Intent(this,HomeActivity::class.java))
-            finish()
-        }
+            finish()}
 
-        signin.setOnClickListener {
+        signin.setOnClickListener {if(email.text.isNullOrEmpty() or pass.text.isNullOrEmpty()){email.setError("This should be filled")
+                                                                                                pass.setError("This should be filled")}
+                                    else{signin.startLoading()
+                                        LoginApiFunCall(email.text.toString().trim(),pass.text.toString().trim(),this)}
+                                  }
 
-            if (email.text.isNullOrEmpty() or pass.text.isNullOrEmpty()){
 
-                email.setError("This should be filled")
-                pass.setError("This should be filled")
-            }
-            else{
-
-                 //start loading
-                signin.startLoading()
-                LoginApiFunCall(email.text.toString().trim(),pass.text.toString().trim(),this)
-                }
-
-        }
-
-        signup.setOnClickListener {
-
-            startActivity(Intent(this,SignUpActivity::class.java))
-
-        }
-
+        signup.setOnClickListener { startActivity(Intent(this,SignUpActivity::class.java)) }
 
     }
 
@@ -64,17 +48,19 @@ class MainActivity : AppCompatActivity() {
 
     fun LoginApiFunCall(email:String , password:String , context: Context){
 
-        val url = "https://vk-backend.herokuapp.com/users/auth/login_user"
         val que = Volley.newRequestQueue(context)
+        val apiP=APIconfigure()
+
 
         val jsonobj = JSONObject()
         jsonobj.put("email",email)
         jsonobj.put("password",password)
-        Log.d("JSONOBJECT",jsonobj.toString())
+        Log.d("LOGIN-JSONOBJECT",jsonobj.toString())
 
-        val req = JsonObjectRequest(Request.Method.POST,url,jsonobj, Response.Listener {response ->
-            Log.d("success","REQUEST GET")
-            Log.d("successFetchData",response.toString())
+
+        val req = JsonObjectRequest(Request.Method.POST,apiP.BASEURL+apiP.LOGINDIR,jsonobj, Response.Listener { response ->
+            Log.d("LOGINsuccess","REQUEST GET")
+            Log.d("LOGINdata",response.toString())
 
             val sharepref: SharedPreferences = getSharedPreferences("LoginUserDetails",0)
 
@@ -83,6 +69,7 @@ class MainActivity : AppCompatActivity() {
             sharepref.edit().putString("refreshToken",response["refreshToken"].toString()).apply()
             sharepref.edit().putString("accesTokenExpiry",response["accesTokenExpiry"].toString()).apply()
             sharepref.edit().putString("login", response["login"].toString()).apply()
+            sharepref.edit().putString("refferal_code", response["self_refferal_code"].toString()).apply()
 
             Toast.makeText(this,"WELCOME BACK...",Toast.LENGTH_LONG).show()
 
@@ -93,17 +80,16 @@ class MainActivity : AppCompatActivity() {
 
         }, Response.ErrorListener {
 
-
             signin.loadingFailed()
             Toast.makeText(this,"Invalid credentials",Toast.LENGTH_LONG).show()
 
-            Log.d("ERROR",it.toString())
-            Log.d("ERROR","REQUEST FAILD")
+            Log.d("LOGINERROR",it.toString())
+            Log.d("LOGINERROR","REQUEST FAILD")
 
         })
 
         que.add(req)
-
+        req.setRetryPolicy(DefaultRetryPolicy(10000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
 
     }
 
