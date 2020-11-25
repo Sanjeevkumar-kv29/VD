@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.Response
@@ -98,6 +99,21 @@ class fragment_profile : Fragment() {
 
     }
 
+
+    override fun onDestroy() {
+
+
+            try {
+                val fragmentManager: androidx.fragment.app.FragmentManager = activity!!.supportFragmentManager
+                val ft: FragmentTransaction = fragmentManager.beginTransaction()
+                ft.remove(this)
+                ft.commit()
+            } catch (e: Exception) {
+            }
+            super.onDestroy()
+
+
+    }
 
 
 

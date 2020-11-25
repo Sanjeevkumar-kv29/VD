@@ -81,10 +81,19 @@ class MainActivity : AppCompatActivity() {
         }, Response.ErrorListener {
 
             signin.loadingFailed()
-            Toast.makeText(this,"Invalid credentials",Toast.LENGTH_LONG).show()
 
             Log.d("LOGINERROR",it.toString())
             Log.d("LOGINERROR","REQUEST FAILD")
+
+
+            val responseBody = String(it.networkResponse.data, charset("utf-8"))
+            val data = JSONObject(responseBody)
+
+            Log.d("LoginErrorResponse",data.toString())
+            val message = data.optString("login")
+
+            Log.d("LoginErrormsg",message)
+
 
         })
 

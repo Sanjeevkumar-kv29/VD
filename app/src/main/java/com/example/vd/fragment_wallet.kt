@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.FragmentTransaction
 import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.Response
@@ -41,6 +42,7 @@ class fragment_wallet : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         shimmer_view_containerwlt.startShimmerAnimation()
+
 
         val Getsharepref: SharedPreferences = this.activity!!.getSharedPreferences("LoginUserDetails",0)
         val id=Getsharepref.getString("user_id","")
@@ -128,6 +130,20 @@ class fragment_wallet : Fragment() {
         req.setRetryPolicy(DefaultRetryPolicy(12000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
 
     }
+
+    override fun onDestroy() {
+        try {
+            val fragmentManager: androidx.fragment.app.FragmentManager = activity!!.supportFragmentManager
+            val ft: FragmentTransaction = fragmentManager.beginTransaction()
+            ft.remove(this)
+            ft.commit()
+        } catch (e: Exception) {
+        }
+        super.onDestroy()
+
+    }
+
+
 
 
 

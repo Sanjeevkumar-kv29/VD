@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/back1"
+    android:layout_gravity="center"
     tools:context=".Redeem">
 
 
@@ -14,26 +16,31 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
+        android:hint="Enter AmountTo Redeem"
+        android:inputType="number"
         android:padding="15dp"
         android:textAlignment="center"
-        android:inputType="number"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="150dp"
-        android:layout_marginEnd="25dp"
-        android:background="@drawable/roundedback"
-        android:hint="Enter AmountTo Redeem" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.325" />
 
     <Button
         android:id="@+id/buttonredeem"
-        android:layout_width="80dp"
+        android:layout_width="150dp"
         android:layout_height="50dp"
-        android:background="@drawable/roundedback"
-        android:elevation="10dp"
         android:layout_below="@+id/redeemamnt"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_margin="75dp"
-        android:text="redeem" />
+        android:background="@drawable/roundedback"
+        android:elevation="10dp"
+        android:text="Withdraw"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/redeemamnt"
+        app:layout_constraintVertical_bias="0.159" />
 
     <cdflynn.android.library.checkview.CheckView
         android:id="@+id/check"
@@ -42,25 +49,39 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="75dp"
-        android:layout_marginTop="125dp"
-        android:layout_marginEnd="75dp"
         android:foregroundGravity="center"
         app:checkView_strokeColor="@color/colorAccent"
-        app:checkView_strokeWidth="5dp" />
+        app:checkView_strokeWidth="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.326" />
 
-    <Button
-        android:id="@+id/donewlt"
-        android:layout_width="80dp"
-        android:layout_height="50dp"
-        android:background="@drawable/roundedback"
-        android:elevation="10dp"
-        android:layout_below="@+id/check"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="30dp"
+    <ProgressBar
+        android:id="@+id/redeemprogressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="68dp"
+        android:layout_height="55dp"
         android:visibility="gone"
-        android:text="DONE" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/check"
+        app:layout_constraintVertical_bias="0.182" />
+
+    <TextView
+        android:id="@+id/tvmsgwallet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Minimum Withdraw Amount 10 Rs"
+        app:layout_constraintBottom_toTopOf="@+id/redeemamnt"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

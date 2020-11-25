@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/navi_profile"
-        android:icon="@drawable/profile"
-        android:title="profile"/>
+        android:icon="@drawable/profileselector"
+        android:title="profile" />
 
     <item
         android:id="@+id/navi_tree"
@@ -13,7 +14,6 @@
         android:id="@+id/navi_wallet"
         android:icon="@drawable/wallet"
         android:title="Wallet"/>
-
 
 
     <item

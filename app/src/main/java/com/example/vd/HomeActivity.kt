@@ -1,28 +1,28 @@
 package com.example.vd
 
+import android.app.PendingIntent.getActivity
 import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.core.view.GravityCompat
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import com.android.volley.RequestQueue
-import com.android.volley.toolbox.Volley
 import com.google.android.material.navigation.NavigationView
 import com.irozon.alertview.AlertActionStyle
 import com.irozon.alertview.AlertStyle
 import com.irozon.alertview.AlertView
 import com.irozon.alertview.objects.AlertAction
 import kotlinx.android.synthetic.main.activity_home.*
+import java.lang.Exception
 
 class HomeActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelectedListener {
 
 
-
+    var walletstatus = "false"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +30,18 @@ class HomeActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         setContentView(R.layout.activity_home)
 
         getSupportActionBar()?.hide()
+
+        val extras: Bundle? = this.getIntent().getExtras()
+        if (extras != null) {
+            val walletstatus = extras.getString("walletstatus")
+            addFragment(fragment_wallet())
+
+        } else {
+            println("Null")
+        }
+
+
+
 
         nav_menu.setNavigationItemSelectedListener(this)
         displayScreen(-1)
@@ -56,14 +68,29 @@ class HomeActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         when (id){/* R.id.navi_search -> {addFragment(fragment_search())
                 Toast.makeText(this,"Search ", Toast.LENGTH_LONG).show()}*/
 
-            R.id.navi_wallet -> {addFragment(fragment_wallet())
-                Toast.makeText(this,"wallet ", Toast.LENGTH_LONG).show()}
+            R.id.navi_wallet -> {
+                try {
+                    addFragment(fragment_wallet())
+                    Toast.makeText(this,"wallet ", Toast.LENGTH_LONG).show()
+                }catch (e: Exception){
+                    Log.d("fragloaderror",e.toString())
+                }}
 
-            R.id.navi_profile -> {addFragment(fragment_profile())
-                Toast.makeText(this,"profile ", Toast.LENGTH_LONG).show()}
+            R.id.navi_profile -> {
+                try {
+                    addFragment(fragment_profile())
+                    Toast.makeText(this,"profile ", Toast.LENGTH_LONG).show()
+                }catch (e: Exception){
+                    Log.d("fragloaderror",e.toString())
+                }}
 
-            R.id.navi_setting -> {addFragment(fragment_setting())
-                Toast.makeText(this,"navi setting", Toast.LENGTH_LONG).show()}
+
+            R.id.navi_setting -> {
+                try {addFragment(fragment_setting())
+                Toast.makeText(this,"setting ", Toast.LENGTH_LONG).show()
+            }catch (e: Exception){
+                Log.d("fragloaderror",e.toString())
+            }}
 
             R.id.navi_logout -> {
 
@@ -84,21 +111,29 @@ class HomeActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
                // Toast.makeText(this,"navi donate", Toast.LENGTH_LONG).show()}
                 //supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment_donation()).commit()
 
-            R.id.navi_tree -> {addFragment(fragment_tree())
-                Toast.makeText(this,"navi tree", Toast.LENGTH_LONG).show()}
+            R.id.navi_tree -> {
+                try {addFragment(fragment_tree())
+                Toast.makeText(this,"tree ", Toast.LENGTH_LONG).show()
+            }catch (e: Exception){
+                Log.d("fragloaderror",e.toString())
+            }}
 
         }
     }
 
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {displayScreen(item.itemId)
+
         return true }
 
 
     private fun addFragment(fragment: Fragment){
+        fragment_container.removeAllViews()
         val fragmentManager: androidx.fragment.app.FragmentManager = supportFragmentManager
         val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.fragment_container, fragment).commit()
+        fragmentTransaction.add(R.id.fragment_container, fragment)
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
     }
 
 }

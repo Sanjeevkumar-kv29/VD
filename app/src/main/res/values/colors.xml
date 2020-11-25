@@ -3,6 +3,7 @@
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#E3C624</color>
+    <color name="colorAccent">#ecba31</color>
     <color name="background">#606060</color>
+    <color name="splashbackground">#ecba31</color>
 </resources>

@@ -2,6 +2,7 @@ package com.example.vd
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Intent
 import android.content.SharedPreferences
 import android.database.Cursor
@@ -19,6 +20,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.Response
@@ -52,7 +54,8 @@ class fragment_setting : Fragment(),UploadRequestBody.UploadCallback {
 
     private var selectedImageUri: Uri? = null
     lateinit var imgURL:String
-
+    var uploadFlag = 0
+    private var pD: ProgressDialog? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -66,6 +69,8 @@ class fragment_setting : Fragment(),UploadRequestBody.UploadCallback {
 
             shimmer_view_containerst.startShimmerAnimation()
 
+        pD = ProgressDialog(context)
+
         val Getsharepref: SharedPreferences = this.activity!!.getSharedPreferences("LoginUserDetails",0)
         val id=Getsharepref.getString("user_id","").toString()
 
@@ -73,6 +78,7 @@ class fragment_setting : Fragment(),UploadRequestBody.UploadCallback {
         getProfile(id)
 
         image_view.setOnClickListener {
+            uploadFlag = 0
             openImageChooser()
         }
         button_upload.setOnClickListener {
@@ -106,10 +112,6 @@ class fragment_setting : Fragment(),UploadRequestBody.UploadCallback {
                 SAccountHolderName.setError("Please enter Address")
             }
             else{
-
-                shimmer_view_containerst.visibility = View.VISIBLE
-                shimmer_view_containerst.startShimmerAnimation()
-
                 saveProfileDetails(id)
             }
 
@@ -120,6 +122,17 @@ class fragment_setting : Fragment(),UploadRequestBody.UploadCallback {
 
     private fun saveProfileDetails(_uid:String) {
 
+
+        if ((selectedImageUri != null) and (uploadFlag==0)) {
+            val alert = AlertView("ALERT....", "Click Upload to upload the selected image", AlertStyle.DIALOG)
+            alert.addAction(AlertAction("ok", AlertActionStyle.DEFAULT, { action -> }))
+            alert.show(activity as AppCompatActivity)
+        }
+
+        else{
+
+            pD?.setMessage("Checking Details...")
+            pD?.show()
         val jsonobj = JSONObject()
         jsonobj.put("full_name",Sname.text)
         jsonobj.put("email",SEmail.text)
@@ -145,8 +158,8 @@ class fragment_setting : Fragment(),UploadRequestBody.UploadCallback {
             Log.d("EDITsuccess","REQUEST GET")
             Log.d("EDITafterProfilefetch",response.toString())
 
-            shimmer_view_containerst.stopShimmerAnimation()
-            shimmer_view_containerst.visibility = View.GONE
+            pD?.dismiss()
+            Toast.makeText(context,"Profile Updated SuccessFully".toString(), Toast.LENGTH_LONG).show()
             //Glide.with(context).asBitmap().load(profileurl).into(profile_image)
 
 
@@ -155,7 +168,7 @@ class fragment_setting : Fragment(),UploadRequestBody.UploadCallback {
         }
         },
             Response.ErrorListener {
-
+                pD?.dismiss()
                 Toast.makeText(context,"Check Your Connection Or try Again Later".toString(), Toast.LENGTH_LONG).show()
                 Log.d("ERROR","REQUEST FAILD")
             })
@@ -163,6 +176,7 @@ class fragment_setting : Fragment(),UploadRequestBody.UploadCallback {
         que.add(req)
         req.setRetryPolicy(DefaultRetryPolicy(10000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
 
+        }
     }
 
 
@@ -220,6 +234,7 @@ class fragment_setting : Fragment(),UploadRequestBody.UploadCallback {
 
         que.add(req)
         req.setRetryPolicy(DefaultRetryPolicy(10000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
+
 
 
     }
@@ -296,11 +311,12 @@ class fragment_setting : Fragment(),UploadRequestBody.UploadCallback {
                     //layout_root.snackbar(it.toString())
                     progress_bar.progress = 100
                     imgURL = it.url
-                    val alert = AlertView("Profile Uploaded", "Image is Uploaded Click Save button to save", AlertStyle.DIALOG)
+                    val alert = AlertView("Profile Uploaded Successfully", "Image is Uploaded Click Save button to save", AlertStyle.DIALOG)
                     alert.addAction(AlertAction("ok", AlertActionStyle.DEFAULT, { action -> }))
                     alert.show(activity as AppCompatActivity)
                     Log.d("result",it.toString())
                     progress_bar.visibility=View.GONE
+                    uploadFlag = 1
                 }
             }
         })
@@ -315,6 +331,19 @@ class fragment_setting : Fragment(),UploadRequestBody.UploadCallback {
         const val REQUEST_CODE_PICK_IMAGE = 101
     }
 
+    override fun onDestroy() {
+
+        try {
+            val fragmentManager: androidx.fragment.app.FragmentManager = activity!!.supportFragmentManager
+            val ft: FragmentTransaction = fragmentManager.beginTransaction()
+            ft.remove(this)
+            ft.commit()
+        } catch (e: Exception) {
+        }
+        super.onDestroy()
+
+
+    }
 
 
 }

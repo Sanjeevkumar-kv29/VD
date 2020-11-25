@@ -37,7 +37,7 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/budda"
             app:itemIconSize="28dp"
-            app:itemIconTint="#ffffff"
+            app:itemIconTint="@color/colorWhite"
             android:background="@color/colorAccent"
             app:menu="@menu/navi_menu" />
 

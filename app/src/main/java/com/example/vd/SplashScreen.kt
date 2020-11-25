@@ -19,11 +19,11 @@ class SplashScreen : AppCompatActivity() {
 
         val animat: Animation = AnimationUtils.loadAnimation(this,R.anim.splashanim)
         val animatv: Animation = AnimationUtils.loadAnimation(this,R.anim.splashanim)
-        splashimg.setImageResource(R.drawable.img1)
+        splashimg.setImageResource(R.drawable.budha_splash)
+        sptv.setImageResource(R.drawable.text_splash)
         splashimg.animation = animat
 
         sptv.animation = animatv
-        sptv2.animation = animatv
 
         Handler().postDelayed(
             {
@@ -31,7 +31,7 @@ class SplashScreen : AppCompatActivity() {
                 startActivity(Intent(this,MainActivity::class.java))
                 finish()
 
-            },2000 )
+            },1600 )
 
 
     }

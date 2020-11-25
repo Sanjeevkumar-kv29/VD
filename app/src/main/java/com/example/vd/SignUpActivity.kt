@@ -169,12 +169,21 @@ class SignUpActivity : AppCompatActivity() {
             },
             Response.ErrorListener {
                 pD?.dismiss()
-                val alert = AlertView("Wrong Referral ID", "Please Check Your Referral ID", AlertStyle.DIALOG)
+
+                val responseBody = String(it.networkResponse.data, charset("utf-8"))
+                val data = JSONObject(responseBody)
+
+                Log.d("LoginErrorResponse",data.toString())
+                val message = data.optString("err")
+
+                val alert = AlertView(message, "Please Check Your Referral ID", AlertStyle.DIALOG)
                 alert.addAction(AlertAction("ok", AlertActionStyle.DEFAULT, { action -> }))
                 referral.setError("Enter Valid referral ID")
                 alert.show(this)
+
                 Log.d("REFFERALERROR",it.toString())
                 Log.d("REFFERALERROR","REQUEST FAILD")
+
             })
             que.add(req)
             req.setRetryPolicy(DefaultRetryPolicy(10000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
