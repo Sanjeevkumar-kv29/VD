@@ -1,11 +1,14 @@
 package com.example.vd
 
+import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
@@ -17,27 +20,118 @@ import com.irozon.alertview.AlertActionStyle
 import com.irozon.alertview.AlertStyle
 import com.irozon.alertview.AlertView
 import com.irozon.alertview.objects.AlertAction
+import com.razorpay.Checkout
+import com.razorpay.PaymentResultListener
 import kotlinx.android.synthetic.main.activity_payment_page.*
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import org.json.JSONObject
 
 
-class PaymentPage : AppCompatActivity() {
+class PaymentPage : AppCompatActivity(),PaymentResultListener {
 
     var UsersignupDatamap = hashMapOf<String, Any?>()
+    private var pD: ProgressDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_payment_page)
         getSupportActionBar()?.hide()
+        pD = ProgressDialog(this)
+        pD?.setMessage("Payment Initiating....")
+        pD?.show()
 
         UsersignupDatamap = intent.getSerializableExtra("UserSignupData") as HashMap<String, Any?>
-        Yes.setOnClickListener {
-            Log.d("intent data ",UsersignupDatamap.toString())
-            signupApiFunCall(UsersignupDatamap,this)
+
+
+
+        CreatingOrder(this,UsersignupDatamap["email"].toString(),UsersignupDatamap["phone_no"].toString())
+
+    }
+
+
+
+    fun CreatingOrder(context: Context,email:String,contact:String){
+
+        val que = Volley.newRequestQueue(context)
+        val API=APIconfigure()
+        var PaymentId = ""
+
+
+        val req = JsonObjectRequest(Request.Method.POST,API.BASEURL+API.CREATEORDER,null,
+            Response.Listener { response ->
+                Log.d("success","REQUEST GET")
+                Log.d("success",response.toString())
+                Log.d("JSONOBJECT",response["payment_id"].toString())
+                PaymentId = response["payment_id"].toString()
+
+                startPayment(email,contact,PaymentId)
+
+
+            },
+            Response.ErrorListener {
+
+                pD?.dismiss()
+                if (it.networkResponse.statusCode.toString()=="503"){
+
+                    Toast.makeText(this,"Server Error Please Try Again Later", Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    Toast.makeText(this,"Something Went Wrong Please Try Again Later", Toast.LENGTH_SHORT).show()
+                }
+            })
+        que.add(req)
+        req.setRetryPolicy(DefaultRetryPolicy(10000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
+
+    }
+
+    private fun startPayment(email:String,contact:String,PaymentId:String) {
+        /*
+        *  You need to pass current activity in order to let Razorpay create CheckoutActivity
+        * */
+        pD?.dismiss()
+        val activity: Activity = this
+        val co = Checkout()
+
+        try {
+            val options = JSONObject()
+            options.put("name","Vasudhaiv Kutumbakam")
+            options.put("description","Demoing Charges")
+            //You can omit the image option to fetch the image from dashboard
+            //options.put("image","https://s3.amazonaws.com/rzp-mobile/images/rzp.png")
+            options.put("currency","INR")
+            options.put("order_id", PaymentId);
+            //options.put("amount","1000")
+
+            val prefill = JSONObject()
+            prefill.put("email",email)
+            prefill.put("contact",contact)
+
+            options.put("prefill",prefill)
+            co.open(activity,options)
+        }catch (e: Exception){
+            Toast.makeText(activity,"Error in payment: "+ e.message,Toast.LENGTH_LONG).show()
+            e.printStackTrace()
         }
     }
 
+    override fun onPaymentSuccess(razorpayPaymentId: String?) {
+        try{
+            Toast.makeText(this,"Payment Successful $razorpayPaymentId",Toast.LENGTH_LONG).show()
+            pD?.setMessage("Singing in...")
+            pD?.show()
+            signupApiFunCall(UsersignupDatamap,this)
+        }catch (e: Exception){
+            Log.e("TAG","Exception in onPaymentSuccess", e)
+        }
+    }
+
+    override fun onPaymentError(errorCode: Int, response: String?) {
+        try{
+            Toast.makeText(this,"Payment failed $errorCode \n $response",Toast.LENGTH_LONG).show()
+        }catch (e: Exception){
+            Log.e("TAG","Exception in onPaymentSuccess", e)
+        }
+    }
 
     fun signupApiFunCall(DATA:HashMap<String, Any?>, context: Context){
 
@@ -60,6 +154,9 @@ class PaymentPage : AppCompatActivity() {
         Log.d("SIGNUP-JSONOBJECT",jsonobj.toString())
 
         val req = JsonObjectRequest(Request.Method.POST,API.BASEURL+API.SIGNUP,jsonobj, Response.Listener { response ->
+
+            pD?.dismiss()
+
             Log.d("success","REQUEST GET")
             Log.d("success",response.toString())
             Log.d("JSONOBJECT",response.toString())
@@ -74,11 +171,13 @@ class PaymentPage : AppCompatActivity() {
             sharepref.edit().putString("refferal_code", response["self_refferal_code"].toString()).apply()
 
             startActivity(Intent(this,HomeActivity::class.java))
+            finish()
             //sharepref.edit().putString("login", response["login"].toString()).apply()
 
         },
         Response.ErrorListener {
 
+            pD?.dismiss()
             val alert = AlertView("An Error Arrive", "Please Check Your Internet", AlertStyle.DIALOG)
             alert.addAction(AlertAction("ok", AlertActionStyle.DEFAULT, { action -> }))
             alert.show(this)

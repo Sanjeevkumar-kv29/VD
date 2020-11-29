@@ -50,6 +50,8 @@ dependencies {
 
     implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
 
+    implementation 'com.razorpay:checkout:1.5.16'
+
 
 
 

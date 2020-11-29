@@ -84,17 +84,23 @@ class MainActivity : AppCompatActivity() {
 
             Log.d("LOGINERROR",it.toString())
             Log.d("LOGINERROR","REQUEST FAILD")
+            Log.d("ErrorCode",it.networkResponse.statusCode.toString())
+
+            if (it.networkResponse.statusCode.toString()=="503"){
+
+                Toast.makeText(this,"Server Error Please Try Again Later",Toast.LENGTH_SHORT).show()
+            }
+            else{
 
 
             val responseBody = String(it.networkResponse.data, charset("utf-8"))
             val data = JSONObject(responseBody)
-
             Log.d("LoginErrorResponse",data.toString())
-            val message = data.optString("login")
-
+            val message = data.optString("err")
+                Toast.makeText(this,message,Toast.LENGTH_SHORT).show()
             Log.d("LoginErrormsg",message)
 
-
+            }
         })
 
         que.add(req)

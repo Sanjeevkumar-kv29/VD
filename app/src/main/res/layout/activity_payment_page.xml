@@ -6,29 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".PaymentPage">
 
-    <Button
-        android:id="@+id/No"
-        android:layout_width="144dp"
-        android:layout_height="84dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="91dp"
-        android:text="No"
-        tools:layout_editor_absoluteX="150dp"
-        tools:layout_editor_absoluteY="527dp" />
 
-    <Button
-        android:id="@+id/Yes"
-        android:layout_width="144dp"
-        android:layout_height="84dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="91dp"
-        android:text="Yes"
-        tools:layout_editor_absoluteX="150dp"
-        tools:layout_editor_absoluteY="527dp" />
 
 </RelativeLayout>

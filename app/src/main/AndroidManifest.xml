@@ -25,6 +25,12 @@
         <activity android:name=".SignUpActivity" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".MainActivity" />
+
+        <meta-data
+            android:name="com.razorpay.ApiKey"
+            android:value="rzp_test_NEIvYiFDMBwz4Z"
+            />
+
     </application>
 
 </manifest>

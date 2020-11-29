@@ -170,19 +170,22 @@ class SignUpActivity : AppCompatActivity() {
             Response.ErrorListener {
                 pD?.dismiss()
 
-                val responseBody = String(it.networkResponse.data, charset("utf-8"))
-                val data = JSONObject(responseBody)
+                if (it.networkResponse.statusCode.toString()=="503"){
 
-                Log.d("LoginErrorResponse",data.toString())
-                val message = data.optString("err")
+                    Toast.makeText(this,"Server Error Please Try Again Later",Toast.LENGTH_SHORT).show()
+                }
+                else{
 
-                val alert = AlertView(message, "Please Check Your Referral ID", AlertStyle.DIALOG)
-                alert.addAction(AlertAction("ok", AlertActionStyle.DEFAULT, { action -> }))
-                referral.setError("Enter Valid referral ID")
-                alert.show(this)
 
-                Log.d("REFFERALERROR",it.toString())
-                Log.d("REFFERALERROR","REQUEST FAILD")
+                    val responseBody = String(it.networkResponse.data, charset("utf-8"))
+                    val data = JSONObject(responseBody)
+                    Log.d("RefferalErrorMsg",data.toString())
+                    val message = data.optString("err")
+                    Toast.makeText(this,message,Toast.LENGTH_SHORT).show()
+                    Log.d("RefferalErrorMsg",message)
+
+                }
+
 
             })
             que.add(req)

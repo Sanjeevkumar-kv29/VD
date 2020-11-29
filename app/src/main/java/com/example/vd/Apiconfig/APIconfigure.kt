@@ -11,5 +11,7 @@ class APIconfigure {
         val GETCHILD = "/users/getChildren"
         val TRANSECTION = "/users/getTransactions?uid="
         val REDEEM = "/users/redeemWallet"
+        val CREATEORDER = "/users/c_payment"
+
 
 }
