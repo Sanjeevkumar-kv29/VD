@@ -38,16 +38,18 @@ class fragment_tree : Fragment() {
 
         val Getsharepref: SharedPreferences = this.activity!!.getSharedPreferences("LoginUserDetails",0)
         val refcode=Getsharepref.getString("refferal_code","")
+        val token=Getsharepref.getString("accessToken","")
 
         childNAME.clear()
         childimgURL.clear()
         mrefferalmobno.clear()
-        getchild(refcode!!.toString())
+
+        getchild(refcode!!.toString(), token.toString())
 
     }
 
 
-    fun getchild(parentid:String){
+    fun getchild(parentid:String,token:String){
 
         val MyRequestQueue = Volley.newRequestQueue(context)
         val API = APIconfigure() // <----enter your post url here
@@ -74,6 +76,13 @@ class fragment_tree : Fragment() {
             {
                 //This code is executed if there is an error.
             }) {
+
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+                headers["x-auth-token"] = token
+                return headers
+            }
+
             override fun getParams(): Map<String, String> {
                 val MyData: MutableMap<String, String> = HashMap()
                 MyData["parentID"] = parentid

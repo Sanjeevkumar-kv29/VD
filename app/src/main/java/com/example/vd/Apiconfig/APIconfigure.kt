@@ -12,6 +12,10 @@ class APIconfigure {
         val TRANSECTION = "/users/getTransactions?uid="
         val REDEEM = "/users/redeemWallet"
         val CREATEORDER = "/users/c_payment"
-
+        val GETOTP = "/users/triggerOTP"
+        val VERIFYOTP = "/users/verifyOTP"
+        val RESETPWD = "/users/changePassword"
+        val CONTACTUS = "/users/saveContact"
+        val GETALLGIFTS = "/users/getAllGifts"
 
 }

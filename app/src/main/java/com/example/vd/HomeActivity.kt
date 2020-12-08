@@ -38,6 +38,7 @@ class HomeActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
 
         } else {
             println("Null")
+            addFragment(fragment_profile())
         }
 
 

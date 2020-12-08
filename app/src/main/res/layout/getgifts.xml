@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:padding="15dp"
+    android:layout_margin="8dp"
+    android:background="@drawable/roundedback"
+    android:backgroundTint="@color/colorAccent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/gift"
+        android:gravity="center" >
+
+    <ImageView
+        android:id="@+id/giftimg"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:background="@drawable/budha_splash"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:gravity="center" >
+
+
+            <TextView
+                android:id="@+id/giftname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="title"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:layout_margin="2dp"
+                android:textColor="@color/colorWhite"
+                android:textSize="18dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+
+        <TextView
+            android:id="@+id/giftdisc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="title"
+            android:textStyle="bold"
+            android:layout_margin="2dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="17dp"
+            android:layout_weight="1"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+
+
+    </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

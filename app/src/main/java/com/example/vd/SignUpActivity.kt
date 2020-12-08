@@ -8,23 +8,31 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
+import androidx.recyclerview.widget.GridLayoutManager
 import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.Response
+import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.example.vd.Adapter.giftRVAdapter
 import com.example.vd.Apiconfig.APIconfigure
 import com.irozon.alertview.AlertActionStyle
 import com.irozon.alertview.AlertStyle
 import com.irozon.alertview.AlertView
 import com.irozon.alertview.objects.AlertAction
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import kotlinx.android.synthetic.main.activity_sign_up.email
 import kotlinx.android.synthetic.main.activity_sign_up.pass
 import kotlinx.android.synthetic.main.activity_sign_up.signin
 import kotlinx.android.synthetic.main.activity_sign_up.signup
+import kotlinx.android.synthetic.main.fragment_tree.*
+import org.json.JSONException
 import org.json.JSONObject
+import java.util.ArrayList
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -83,52 +91,7 @@ class SignUpActivity : AppCompatActivity() {
 
        }
 
-        MakePayment.setOnClickListener {
 
-            if (Bankname.text.isNullOrEmpty()){
-                Bankname.setError("Please Enter Bank Name.")
-            }
-            else if (AccountNo.text.isNullOrEmpty()){
-                AccountNo.setError("Please Enter Account No.")
-            }
-            else if (ReAccountNo.text.isNullOrEmpty()){
-                ReAccountNo.setError("Please Re-Enter Account No")
-            }
-            else if (AccountNo.text.toString()!= ReAccountNo.text.toString()){
-               AccountNo.setError("Account No And Re-Enter account no. Not matched")
-               ReAccountNo.setError("Account No And Re-Enter account no. Not matched")
-            }
-            else if (IFSCcode.text.isNullOrEmpty()){
-                IFSCcode.setError("Please enter IFSC Code")
-            }
-            else if (AccountHolderName.text.isNullOrEmpty()){
-                AccountHolderName.setError("Please enter Account Holder's Name")
-            }
-            else{
-
-                val alert = AlertView("Conformation ", "Bank name - ${Bankname.text} \n Account No. - ${ AccountNo.text} \n IFSC Code - ${IFSCcode.text} \n Account Holder - ${AccountHolderName.text} ", AlertStyle.DIALOG)
-                alert.addAction(AlertAction("Edit", AlertActionStyle.DEFAULT, { action -> }))
-                alert.addAction(AlertAction("Proceed", AlertActionStyle.POSITIVE, { action ->
-
-                    UsersignupDatamap["bankName"] = Bankname.text
-                    UsersignupDatamap["account_no"] = AccountNo.text
-                    UsersignupDatamap["account_holder_name"] = AccountHolderName.text
-                    UsersignupDatamap["ifsc_code"] = IFSCcode.text
-
-                    Log.d("UserSignUpFullData",UsersignupDatamap.toString())
-
-                    val intent = Intent(this,PaymentPage::class.java)
-                    intent.putExtra("UserSignupData",UsersignupDatamap)
-                    startActivity(intent)
-
-                     }))
-                alert.show(this)
-
-
-            }
-
-
-        }
 
         signin.setOnClickListener {
             startActivity(Intent(this,MainActivity::class.java))
@@ -143,6 +106,8 @@ class SignUpActivity : AppCompatActivity() {
         val API=APIconfigure()
         val jsonobj = JSONObject()
         jsonobj.put("parentID",Parentid)
+        jsonobj.put("email",email.text)
+        jsonobj.put("phone_no",contact.text)
         Log.d("SIGNUP-JSONOBJECT",jsonobj.toString())
 
 
@@ -162,9 +127,11 @@ class SignUpActivity : AppCompatActivity() {
                 Log.d("UserSignUpData",UsersignupDatamap.toString())
 
                 pD?.dismiss()
-                if(response["response"].equals("Refferal is valid")){UserdetailLyt.visibility = View.GONE
-                                                                      signin.visibility = View.GONE
-                                                                      BankdetailLyt.visibility = View.VISIBLE}
+
+                val intent = Intent(this,signgetgift::class.java)
+                intent.putExtra("UserSignupData",UsersignupDatamap)
+                startActivity(intent)
+
 
             },
             Response.ErrorListener {
@@ -192,6 +159,7 @@ class SignUpActivity : AppCompatActivity() {
             req.setRetryPolicy(DefaultRetryPolicy(10000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
 
     }
+
 
 
 

@@ -35,11 +35,15 @@ class MainActivity : AppCompatActivity() {
         signin.setOnClickListener {if(email.text.isNullOrEmpty() or pass.text.isNullOrEmpty()){email.setError("This should be filled")
                                                                                                 pass.setError("This should be filled")}
                                     else{signin.startLoading()
-                                        LoginApiFunCall(email.text.toString().trim(),pass.text.toString().trim(),this)}
-                                  }
+                                         LoginApiFunCall(email.text.toString().trim(),pass.text.toString().trim(),this)} }
 
 
         signup.setOnClickListener { startActivity(Intent(this,SignUpActivity::class.java)) }
+
+
+        forgetpass.setOnClickListener { startActivity(Intent(this,ForgetPassword::class.java))  }
+
+        contactus.setOnClickListener { startActivity(Intent(this,Contactus::class.java))  }
 
     }
 

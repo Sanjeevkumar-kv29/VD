@@ -13,7 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".Redeem"></activity>
+        <activity android:name=".signgetgift"></activity>
+        <activity android:name=".SignupBankdetail" />
+        <activity android:name=".Contactus" />
+        <activity android:name=".ForgetPassword" />
+        <activity android:name=".Redeem" />
         <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,9 +32,7 @@
 
         <meta-data
             android:name="com.razorpay.ApiKey"
-            android:value="rzp_test_NEIvYiFDMBwz4Z"
-            />
-
+            android:value="rzp_test_NEIvYiFDMBwz4Z" />
     </application>
 
 </manifest>

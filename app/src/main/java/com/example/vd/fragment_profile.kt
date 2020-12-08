@@ -81,6 +81,7 @@ class fragment_profile : Fragment() {
                     wallatbalance.text = wallet.toString()
                     lifetimeearning.text = lifetimeEarnings.toString()
                     UserEmail.text = email.toString()
+                    pstatus.text = payment_status.toString()
 
 
 

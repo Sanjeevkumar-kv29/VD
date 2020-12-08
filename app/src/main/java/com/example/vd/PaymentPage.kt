@@ -21,13 +21,15 @@ import com.irozon.alertview.AlertStyle
 import com.irozon.alertview.AlertView
 import com.irozon.alertview.objects.AlertAction
 import com.razorpay.Checkout
+import com.razorpay.PaymentData
 import com.razorpay.PaymentResultListener
+import com.razorpay.PaymentResultWithDataListener
 import kotlinx.android.synthetic.main.activity_payment_page.*
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import org.json.JSONObject
 
 
-class PaymentPage : AppCompatActivity(),PaymentResultListener {
+class PaymentPage : AppCompatActivity(),PaymentResultWithDataListener {
 
     var UsersignupDatamap = hashMapOf<String, Any?>()
     private var pD: ProgressDialog? = null
@@ -96,12 +98,8 @@ class PaymentPage : AppCompatActivity(),PaymentResultListener {
             val options = JSONObject()
             options.put("name","Vasudhaiv Kutumbakam")
             options.put("description","Demoing Charges")
-            //You can omit the image option to fetch the image from dashboard
-            //options.put("image","https://s3.amazonaws.com/rzp-mobile/images/rzp.png")
             options.put("currency","INR")
-            options.put("order_id", PaymentId);
-            //options.put("amount","1000")
-
+            options.put("order_id", PaymentId)
             val prefill = JSONObject()
             prefill.put("email",email)
             prefill.put("contact",contact)
@@ -114,18 +112,25 @@ class PaymentPage : AppCompatActivity(),PaymentResultListener {
         }
     }
 
-    override fun onPaymentSuccess(razorpayPaymentId: String?) {
+    override fun onPaymentSuccess(razorpayPaymentId: String?,paymentData: PaymentData) {
         try{
             Toast.makeText(this,"Payment Successful $razorpayPaymentId",Toast.LENGTH_LONG).show()
             pD?.setMessage("Singing in...")
             pD?.show()
+
+            UsersignupDatamap["order_id"]=paymentData.orderId
+            UsersignupDatamap["razorpay_payment_id"]=paymentData.paymentId
+            UsersignupDatamap["razorpay_signature"]=paymentData.signature
+
             signupApiFunCall(UsersignupDatamap,this)
+
+
         }catch (e: Exception){
             Log.e("TAG","Exception in onPaymentSuccess", e)
         }
     }
 
-    override fun onPaymentError(errorCode: Int, response: String?) {
+    override fun onPaymentError(errorCode: Int, response: String?, p2: PaymentData?) {
         try{
             Toast.makeText(this,"Payment failed $errorCode \n $response",Toast.LENGTH_LONG).show()
         }catch (e: Exception){
@@ -139,6 +144,7 @@ class PaymentPage : AppCompatActivity(),PaymentResultListener {
         val que = Volley.newRequestQueue(context)
 
         val jsonobj = JSONObject()
+
         jsonobj.put("full_name",DATA["full_name"])
         jsonobj.put("gender",DATA["gender"])
         jsonobj.put("phone_no",DATA["phone_no"])
@@ -150,6 +156,13 @@ class PaymentPage : AppCompatActivity(),PaymentResultListener {
         jsonobj.put("account_no",DATA["account_no"])
         jsonobj.put("account_holder_name",DATA["account_holder_name"])
         jsonobj.put("ifsc_code",DATA["ifsc_code"])
+
+        jsonobj.put("order_id",DATA["order_id"])
+        jsonobj.put("razorpay_payment_id",DATA["razorpay_payment_id"])
+        jsonobj.put("razorpay_signature",DATA["razorpay_signature"])
+        jsonobj.put("giftName",DATA["giftName"])
+        jsonobj.put("giftImage",DATA["giftImage"])
+        jsonobj.put("giftDescription",DATA["giftDescription"])
 
         Log.d("SIGNUP-JSONOBJECT",jsonobj.toString())
 
@@ -178,7 +191,7 @@ class PaymentPage : AppCompatActivity(),PaymentResultListener {
         Response.ErrorListener {
 
             pD?.dismiss()
-            val alert = AlertView("An Error Arrive", "Please Check Your Internet", AlertStyle.DIALOG)
+            val alert = AlertView("An Error Arrive", "Something went wrong Please Contact us If you amount is deducted", AlertStyle.DIALOG)
             alert.addAction(AlertAction("ok", AlertActionStyle.DEFAULT, { action -> }))
             alert.show(this)
 

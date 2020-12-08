@@ -158,6 +158,27 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="Payment status - "
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/pstatus"
+                    android:layout_marginBottom="10dp"
+                    android:hint="AbcXyz@gmail.com"
+                    android:textSize="16dp" />
+
+            </LinearLayout>
             <ImageView
                 android:layout_width="350dp"
                 android:layout_height="2.5dp"

@@ -8,17 +8,16 @@
     tools:context=".SignUpActivity">
 
 
-    <Button
-        android:id="@+id/signin"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="150dp"
-        android:layout_height="55dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="0dp"
-        android:text="Sign in"
-        android:textColor="@color/colorAccent"
-        android:textSize="24dp"
-        android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/signin"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:text="Sign in"
+                android:textColor="@color/colorAccent"
+                android:textSize="24dp"
+                android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -29,18 +28,13 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="horizontal"
-        android:layout_marginTop="10dp"
+        android:layout_height="530dp"
         android:layout_below="@+id/imageView"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="15dp"
+        android:scrollbars="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView">
-
-        <LinearLayout
-            android:id="@+id/details"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+        app:layout_constraintTop_toBottomOf="@id/imageView">
 
             <LinearLayout
                 android:id="@+id/UserdetailLyt"
@@ -73,8 +67,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
                     android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
                     <RadioButton
@@ -238,128 +232,12 @@
             </LinearLayout>
 
 
-            <LinearLayout
-                android:id="@+id/BankdetailLyt"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"
-                android:orientation="vertical">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/Banknamelyt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginEnd="25dp"
-                    android:hint="Enter Your Bank Name"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/Bankname"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/AccountNolyt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginEnd="25dp"
-                    android:hint="Enter Account No"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/Banknamelyt">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/AccountNo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="number" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/ReAccountNolyt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginEnd="25dp"
-                    android:hint="Re-Enter Account No"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/AccountNolyt">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/ReAccountNo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="number" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/IFSCcodelyt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginEnd="25dp"
-                    android:hint="IFSC Code"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/ReAccountNolyt">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/IFSCcode"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/AccountHolderNamelty"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginEnd="25dp"
-                    android:hint="Enter Account Holder Name"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/referrallyt">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/AccountHolderName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <Button
-                    android:id="@+id/MakePayment"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="392dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="Make Payment"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="36dp"
-                    app:layout_constraintTop_toBottomOf="@+id/pincodelyt" />
-            </LinearLayout>
-
-        </LinearLayout>
-
     </ScrollView>
 
-
+    <FrameLayout
+        android:id="@+id/Signupfragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toEndOf="@+id/relativeLayout"/>
 
 </RelativeLayout>
