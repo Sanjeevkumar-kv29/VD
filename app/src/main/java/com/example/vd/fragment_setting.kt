@@ -73,9 +73,10 @@ class fragment_setting : Fragment(),UploadRequestBody.UploadCallback {
 
         val Getsharepref: SharedPreferences = this.activity!!.getSharedPreferences("LoginUserDetails",0)
         val id=Getsharepref.getString("user_id","").toString()
+        val token=Getsharepref.getString("accessToken","").toString()
 
 
-        getProfile(id)
+        getProfile(id,token)
 
         image_view.setOnClickListener {
             uploadFlag = 0
@@ -112,7 +113,7 @@ class fragment_setting : Fragment(),UploadRequestBody.UploadCallback {
                 SAccountHolderName.setError("Please enter Address")
             }
             else{
-                saveProfileDetails(id)
+                saveProfileDetails(id,token)
             }
 
         }
@@ -120,7 +121,7 @@ class fragment_setting : Fragment(),UploadRequestBody.UploadCallback {
     }
 
 
-    private fun saveProfileDetails(_uid:String) {
+    private fun saveProfileDetails(_uid:String,token: String) {
 
 
         if ((selectedImageUri != null) and (uploadFlag==0)) {
@@ -154,7 +155,7 @@ class fragment_setting : Fragment(),UploadRequestBody.UploadCallback {
         val API = APIconfigure()
         val que = Volley.newRequestQueue(context)
 
-        val req = JsonObjectRequest(Request.Method.PUT,API.BASEURL+API.PROFILEDIT,jsonOBJFinal, Response.Listener { response ->try {
+            val req: JsonObjectRequest = object:JsonObjectRequest(Request.Method.PUT,API.BASEURL+API.PROFILEDIT,jsonOBJFinal, Response.Listener { response ->try {
             Log.d("EDITsuccess","REQUEST GET")
             Log.d("EDITafterProfilefetch",response.toString())
 
@@ -173,6 +174,15 @@ class fragment_setting : Fragment(),UploadRequestBody.UploadCallback {
                 Log.d("ERROR","REQUEST FAILD")
             })
 
+            {
+                override fun getHeaders(): MutableMap<String, String> {
+                    val headers = HashMap<String, String>()
+                    headers["x-auth-token"] = token
+                    return headers
+                }
+            }
+
+
         que.add(req)
         req.setRetryPolicy(DefaultRetryPolicy(10000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
 
@@ -180,12 +190,12 @@ class fragment_setting : Fragment(),UploadRequestBody.UploadCallback {
     }
 
 
-    fun getProfile(Userid:String){
+    fun getProfile(Userid:String,token: String){
 
         val url = "https://vk-backend.herokuapp.com/users/c_profile?uid=${Userid}"
         val que = Volley.newRequestQueue(context)
 
-        val req = JsonObjectRequest(Request.Method.GET,url,null, Response.Listener { response ->try {
+        val req: JsonObjectRequest = object:JsonObjectRequest(Request.Method.GET,url,null, Response.Listener { response ->try {
             Log.d("success","REQUEST GET")
             Log.d("Profile fetch",response.toString())
 
@@ -232,6 +242,13 @@ class fragment_setting : Fragment(),UploadRequestBody.UploadCallback {
                 Log.d("ERROR","REQUEST FAILD")
             })
 
+        {
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+                headers["x-auth-token"] = token
+                return headers
+            }
+        }
         que.add(req)
         req.setRetryPolicy(DefaultRetryPolicy(10000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
 

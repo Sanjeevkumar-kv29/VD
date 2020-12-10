@@ -1,6 +1,6 @@
 package com.example.vd
 
-import android.app.ProgressDialog
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -40,17 +40,18 @@ class fragment_profile : Fragment() {
         val Getsharepref: SharedPreferences = this.activity!!.getSharedPreferences("LoginUserDetails",0)
         val id=Getsharepref.getString("user_id","")
 
+        val token=Getsharepref.getString("accessToken","").toString()
 
-        getProfile(id!!)
+        getProfile(id!!,token)
 
     }
 
-    fun getProfile(Userid:String){
+    fun getProfile(Userid: String, token: String){
 
             val API = APIconfigure()
             val que = Volley.newRequestQueue(context)
 
-            val req = JsonObjectRequest(Request.Method.GET,API.BASEURL+API.PROFILE+Userid,null,
+        val req: JsonObjectRequest = object:JsonObjectRequest(Request.Method.GET,API.BASEURL+API.PROFILE+Userid,null,
                 Response.Listener { response ->try {
                     Log.d("success","REQUEST GET")
                     Log.d("Profile fetch",response.toString())
@@ -91,10 +92,28 @@ class fragment_profile : Fragment() {
             },
             Response.ErrorListener {
 
+                if ( it.networkResponse.statusCode == 401){
+
+                    val sharepref: SharedPreferences = activity!!.getSharedPreferences("LoginUserDetails",0)
+                    val editor: SharedPreferences.Editor = sharepref.edit()
+                    editor.clear()
+                    editor.commit()
+                    startActivity(Intent(activity,MainActivity::class.java))
+                    activity?.finish()
+                }
+
                 Toast.makeText(context,"Check Your Connection Or try Again Later".toString(), Toast.LENGTH_LONG).show()
                 Log.d("ERROR","REQUEST FAILD")
             })
 
+
+        {
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+                headers["x-auth-token"] = token
+                return headers
+            }
+        }
             que.add(req)
             req.setRetryPolicy(DefaultRetryPolicy(12000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
 

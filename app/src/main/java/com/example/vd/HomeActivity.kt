@@ -72,7 +72,7 @@ class HomeActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
             R.id.navi_wallet -> {
                 try {
                     addFragment(fragment_wallet())
-                    Toast.makeText(this,"wallet ", Toast.LENGTH_LONG).show()
+                   // Toast.makeText(this,"wallet ", Toast.LENGTH_LONG).show()
                 }catch (e: Exception){
                     Log.d("fragloaderror",e.toString())
                 }}
@@ -80,7 +80,7 @@ class HomeActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
             R.id.navi_profile -> {
                 try {
                     addFragment(fragment_profile())
-                    Toast.makeText(this,"profile ", Toast.LENGTH_LONG).show()
+                    //Toast.makeText(this,"profile ", Toast.LENGTH_LONG).show()
                 }catch (e: Exception){
                     Log.d("fragloaderror",e.toString())
                 }}
@@ -88,14 +88,14 @@ class HomeActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
 
             R.id.navi_setting -> {
                 try {addFragment(fragment_setting())
-                Toast.makeText(this,"setting ", Toast.LENGTH_LONG).show()
+                //Toast.makeText(this,"setting ", Toast.LENGTH_LONG).show()
             }catch (e: Exception){
                 Log.d("fragloaderror",e.toString())
             }}
 
             R.id.navi_logout -> {
 
-                val alert = AlertView("Confirm Logout ", "Are you Really Want to Logout", AlertStyle.BOTTOM_SHEET)
+                val alert = AlertView("Confirm Logout ", "Are you sure you want to logout?", AlertStyle.BOTTOM_SHEET)
                 alert.addAction(AlertAction("No", AlertActionStyle.DEFAULT, { action -> }))
                 alert.addAction(AlertAction("Yes", AlertActionStyle.POSITIVE, { action ->
                     val sharepref: SharedPreferences = getSharedPreferences("LoginUserDetails",0)
@@ -114,7 +114,7 @@ class HomeActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
 
             R.id.navi_tree -> {
                 try {addFragment(fragment_tree())
-                Toast.makeText(this,"tree ", Toast.LENGTH_LONG).show()
+                //Toast.makeText(this,"tree ", Toast.LENGTH_LONG).show()
             }catch (e: Exception){
                 Log.d("fragloaderror",e.toString())
             }}

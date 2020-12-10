@@ -161,7 +161,8 @@
                         android:id="@+id/Scontact"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="number"
+                        android:inputType="none"
+                        android:editable="false"
                         android:maxLength="10" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -190,7 +191,8 @@
                         android:id="@+id/SEmail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="text" />
+                        android:editable="false"
+                        android:inputType="none" />
                 </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -202,6 +204,7 @@
                 android:layout_marginTop="10dp"
                 android:text="BANK DETAILS"
                 android:textAlignment="center"
+                android:visibility="gone"
                 android:textSize="27dp" />
 
 
@@ -211,7 +214,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="15dp"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/SUserdetailLyt">
 

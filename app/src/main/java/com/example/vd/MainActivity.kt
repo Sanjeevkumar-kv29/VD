@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity() {
 
             Log.d("LOGINERROR",it.toString())
             Log.d("LOGINERROR","REQUEST FAILD")
-            Log.d("ErrorCode",it.networkResponse.statusCode.toString())
+            //Log.d("ErrorCode",it.networkResponse.statusCode.toString())
 
             if (it.networkResponse.statusCode.toString()=="503"){
 

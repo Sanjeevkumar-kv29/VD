@@ -39,7 +39,7 @@ class PaymentPage : AppCompatActivity(),PaymentResultWithDataListener {
         setContentView(R.layout.activity_payment_page)
         getSupportActionBar()?.hide()
         pD = ProgressDialog(this)
-        pD?.setMessage("Payment Initiating....")
+        pD?.setMessage("Please wait....")
         pD?.show()
 
         UsersignupDatamap = intent.getSerializableExtra("UserSignupData") as HashMap<String, Any?>

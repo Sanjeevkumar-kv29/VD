@@ -8,12 +8,13 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/budha_splash"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/budha_splash"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".signgetgift"></activity>
+        <activity android:name=".afterpaymentPoPup"></activity>
+        <activity android:name=".signgetgift" />
         <activity android:name=".SignupBankdetail" />
         <activity android:name=".Contactus" />
         <activity android:name=".ForgetPassword" />

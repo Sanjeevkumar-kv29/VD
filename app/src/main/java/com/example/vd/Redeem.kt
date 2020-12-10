@@ -14,6 +14,7 @@ import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.vd.Apiconfig.APIconfigure
 import kotlinx.android.synthetic.main.activity_redeem.*
@@ -27,12 +28,16 @@ class Redeem : AppCompatActivity() {
 
         val Getsharepref: SharedPreferences = getSharedPreferences("LoginUserDetails",0)
         val id=Getsharepref.getString("user_id","")
+        val token=Getsharepref.getString("accessToken","")
 
         buttonredeem.setOnClickListener {
 
-            if ((redeemamnt.text.isNullOrEmpty()) or (redeemamnt.text.toString()<1.toString()))
+            if (redeemamnt.text.isNullOrEmpty()) {
+                    redeemamnt.setError("Enter amount")
+                }
+            else if(redeemamnt.text.toString()<100.toString())
             {
-                redeemamnt.setError("enter valid amount")
+                redeemamnt.setError("Amount should be more then 100Rs")
             }
             else{
                 try {
@@ -42,14 +47,14 @@ class Redeem : AppCompatActivity() {
 
                 }
                 redeemprogressBar.visibility = View.VISIBLE
-                redeemApi(id.toString(),redeemamnt.text.toString())
+                redeemApi(id.toString(),redeemamnt.text.toString(),token.toString())
             }
         }
 
     }
 
 
-    fun redeemApi(uid:String,wltamount:String){
+    fun redeemApi(uid:String,wltamount:String,token:String){
 
         val API = APIconfigure()
         val que = Volley.newRequestQueue(this)
@@ -60,7 +65,8 @@ class Redeem : AppCompatActivity() {
 
         Log.d("JSONOBJECT",jsonobj.toString())
 
-        val req = JsonObjectRequest(Request.Method.POST,API.BASEURL+API.REDEEM,jsonobj, Response.Listener { response ->
+
+        val req: JsonObjectRequest = object:JsonObjectRequest(Request.Method.POST,API.BASEURL+API.REDEEM,jsonobj, Response.Listener { response ->
             Log.d("success","REQUEST GET")
             Log.d("successFetchData",response.toString())
 
@@ -73,8 +79,7 @@ class Redeem : AppCompatActivity() {
 
             Handler().postDelayed(
                 {
-                    val intent = Intent(this,HomeActivity::class.java)
-                    intent.putExtra("walletstatus","true")
+                    val intent = Intent(this,afterpaymentPoPup::class.java)
                     startActivity(intent)
                     finish()
 
@@ -98,11 +103,32 @@ class Redeem : AppCompatActivity() {
             else{
 
             Log.d("ERROR",it.networkResponse.statusCode.toString())
+                if ( it.networkResponse.statusCode == 401){
+
+                    val sharepref: SharedPreferences = getSharedPreferences("LoginUserDetails",0)
+                    val editor: SharedPreferences.Editor = sharepref.edit()
+                    editor.clear()
+                    editor.commit()
+                    startActivity(Intent(this,MainActivity::class.java))
+                    finish()
+
+
+                }
             Toast.makeText(this,"An error Occured or In-sufficient Wallat balance", Toast.LENGTH_LONG).show()
             Log.d("ERROR",it.toString())
             Log.d("ERROR","REQUEST FAILD")
             }
+
         })
+
+
+            {
+                override fun getHeaders(): MutableMap<String, String> {
+                    val headers = HashMap<String, String>()
+                    headers["x-auth-token"] = token
+                    return headers
+                }
+            }
 
         que.add(req)
         req.setRetryPolicy(DefaultRetryPolicy(10000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))

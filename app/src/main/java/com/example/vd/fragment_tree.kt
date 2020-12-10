@@ -1,6 +1,7 @@
 package com.example.vd
 
 import android.R.attr.password
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -17,6 +18,10 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.vd.Adapter.childsRVAdapter
 import com.example.vd.Apiconfig.APIconfigure
+import com.irozon.alertview.AlertActionStyle
+import com.irozon.alertview.AlertStyle
+import com.irozon.alertview.AlertView
+import com.irozon.alertview.objects.AlertAction
 import kotlinx.android.synthetic.main.fragment_tree.*
 import org.json.JSONArray
 import java.util.ArrayList
@@ -74,6 +79,15 @@ class fragment_tree : Fragment() {
             },
             Response.ErrorListener
             {
+                if ( it.networkResponse.statusCode == 401){
+
+                       val sharepref: SharedPreferences = activity!!.getSharedPreferences("LoginUserDetails",0)
+                        val editor: SharedPreferences.Editor = sharepref.edit()
+                        editor.clear()
+                        editor.commit()
+                        startActivity(Intent(activity,MainActivity::class.java))
+                        activity?.finish()
+                }
                 //This code is executed if there is an error.
             }) {
 
